@@ -18,19 +18,17 @@ const PointTable = ({navigation}) => {
     pointData();
   }, []);
 
+  const sortTableData = (data, isAscending) => {
+    return data.slice().sort((a, b) => {
+      return isAscending ? a.score - b.score : b.score - a.score;
+    });
+  };
+
   const changeOrder = () => {
     setLoading(true);
-    if (!ascending) {
-      tableData.sort((a, b) => {
-        return a.score - b.score;
-      });
-    } else {
-      tableData.sort((a, b) => {
-        return b.score - a.score;
-      });
-    }
+    const sortedData = sortTableData(tableData, !ascending);
     setAscending(!ascending);
-    setTableData([...tableData]);
+    setTableData(sortedData);
     setLoading(false);
   };
 
