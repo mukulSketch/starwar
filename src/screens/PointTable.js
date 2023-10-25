@@ -13,13 +13,13 @@ import {
 const PointTable = ({navigation}) => {
   const [tableData, setTableData] = useState([]);
   const [ascending, setAscending] = useState(false);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     pointData();
   }, []);
 
   const changeOrder = () => {
-    setLoading(true)
+    setLoading(true);
     if (!ascending) {
       tableData.sort((a, b) => {
         return a.score - b.score;
@@ -31,16 +31,20 @@ const PointTable = ({navigation}) => {
     }
     setAscending(!ascending);
     setTableData([...tableData]);
-    setLoading(false)
+    setLoading(false);
   };
 
   const pointData = async () => {
-    let list = await axios.get('https://www.jsonkeeper.com/b/IKQQ');
-    for (var n of list.data) {
-      n.score = parseInt((n.score = Math.random() * 100));
+    try {
+      let list = await axios.get('https://www.jsonkeeper.com/b/IKQQ');
+      for (var n of list.data) {
+        n.score = parseInt((n.score = Math.random() * 100));
+      }
+      setTableData(list.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
     }
-    setTableData(list.data);
-    setLoading(false)
   };
   return (
     <ScrollView>
@@ -63,30 +67,30 @@ const PointTable = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={{padding: 7}}>
-        {loading ? 
-        <View style={{justifyContent:"center", alignItems: 'center'}}>
-        <ActivityIndicator color={'#45474B'} size={50} />
-        </View>
-        :
-        <View>
-        {tableData.map((res, index) => {
-          return (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('ScoreList', {playerName: res.name});
-              }}
-              style={styles.playerCard}
-              key={index}>
-              <Image style={styles.playerIcon} source={{uri: res.icon}} />
-              <View style={styles.detailBox}>
-                <Text style={styles.playerDetails}>{res.name}</Text>
-                <Text style={styles.playerDetails}>{res.score}</Text>
-              </View>
-            </TouchableOpacity>
-          );
-        })}
-        </View>
-      }
+        {loading ? (
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <ActivityIndicator color={'#45474B'} size={50} />
+          </View>
+        ) : (
+          <View>
+            {tableData.map((res, index) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('ScoreList', {playerName: res.name});
+                  }}
+                  style={styles.playerCard}
+                  key={index}>
+                  <Image style={styles.playerIcon} source={{uri: res.icon}} />
+                  <View style={styles.detailBox}>
+                    <Text style={styles.playerDetails}>{res.name}</Text>
+                    <Text style={styles.playerDetails}>{res.score}</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        )}
       </View>
     </ScrollView>
   );
