@@ -36,7 +36,7 @@ const PointTable = ({navigation}) => {
     try {
       let list = await axios.get('https://www.jsonkeeper.com/b/IKQQ');
       for (var n of list.data) {
-        n.score = parseInt((n.score = Math.random() * 100));
+        n.score = parseInt((Math.random() * 100));
       }
       setTableData(list.data);
       setLoading(false);
