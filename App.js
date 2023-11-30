@@ -3,6 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import PointTable from './src/screens/PointTable';
 import ScoreList from './src/screens/ScoreList';
+import Module from './src/screens/Module';
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -18,6 +19,11 @@ const App = () => {
           <Stack.Screen
           name="ScoreList"
           component={ScoreList}
+          options={{headerShown: false}}
+        />
+         <Stack.Screen
+          name="Module"
+          component={Module}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

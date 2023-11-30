@@ -19,7 +19,7 @@ const PointTable = ({navigation}) => {
   }, []);
 
   const sortTableData = (data, isAscending) => {
-    return data.slice().sort((a, b) => {
+    return data.sort((a, b) => {
       return isAscending ? a.score - b.score : b.score - a.score;
     });
   };
